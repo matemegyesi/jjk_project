@@ -44,3 +44,33 @@ switch (check)
     default:
         break;
 }
+//Task 4. Curse names in alphabetical order
+Console.WriteLine("All curses names:");
+foreach (var item in Jujutsu.CurseNames.OrderBy(e => e))
+{
+    Console.WriteLine("\t" + item);
+}
+//Task 5. Whose domain is stronger in the top 3
+for (int i = 0; i < 3; i++)
+{
+    Sorcerer currentS = Jujutsu.Strongest3Sorcerer[i];
+    Curse currentC = Jujutsu.Strongest3Curse[i];
+    int clash = Jujutsu.DomainClash(currentS, currentC);
+    switch (clash)
+    {
+        case 0:
+            Console.WriteLine($"{currentS.Name}'s and {currentC.Name}'s domains are equally strong!");
+            break;
+        case 1:
+            Console.WriteLine($"{currentS.Name}'s {currentS.DomainName} domain would defeat {currentC.Name}!");
+            break;
+        case -1:
+            Console.WriteLine($"{currentC.Name}'s {currentC.DomainName} domain would defeat {currentS.Name}!");
+            break;
+        default:
+            break;
+    }
+}
+//Task 6. All domains' names in alphabetical order
+Console.WriteLine("All domains in alphabetical order and it's user:");
+Jujutsu.DomainNames().OrderBy(e => e).ToList().ForEach(e => Console.WriteLine($"\t{e} - {Jujutsu.GetDomainUser(e)}"));
