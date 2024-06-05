@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jjkLib", "jjkLib\jjkLib.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jjkCls", "jjkCls\jjkCls.csproj", "{3B33CBC8-8679-41F4-A027-3D7CDB0B5D71}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jjkWpf", "jjkWpf\jjkWpf.csproj", "{FF3B95D0-DCCF-45DA-B9D4-1D97513C0CCF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{3B33CBC8-8679-41F4-A027-3D7CDB0B5D71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B33CBC8-8679-41F4-A027-3D7CDB0B5D71}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B33CBC8-8679-41F4-A027-3D7CDB0B5D71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF3B95D0-DCCF-45DA-B9D4-1D97513C0CCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF3B95D0-DCCF-45DA-B9D4-1D97513C0CCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF3B95D0-DCCF-45DA-B9D4-1D97513C0CCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF3B95D0-DCCF-45DA-B9D4-1D97513C0CCF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
