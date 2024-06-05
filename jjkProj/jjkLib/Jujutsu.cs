@@ -32,46 +32,58 @@ namespace jjkLib
     }
     public class Jujutsu
     {
-        public static List<Sorcerer> Sorcerers { get; private set; }
-        public static List<Curse> Curses { get; private set; }
-        public static List<Battle> Battles { get; private set; }
+        public static List<Sorcerer> Sorcerers { get; private set; } = new List<Sorcerer>();
+        public static List<Curse> Curses { get; private set; } = new List<Curse>();
+        public static List<Battle> Battles { get; private set; } = new List<Battle>();
+
         public static IJujutsu? Get(string name)
         {
-            if (Sorcerers.Exists(e => e.Name == name))
-                return Sorcerers.First(e => e.Name == name);
-            else if (Curses.Exists(e => e.Name == name))
-                return Curses.First(e => e.Name == name);
-            return null;
+            return Sorcerers.FirstOrDefault(e => e.Name == name) ?? (IJujutsu?)Curses.FirstOrDefault(e => e.Name == name);
         }
 
-        public static void InitSorceres(IEnumerable<Sorcerer> sors)
+        public static void InitSorcerers(IEnumerable<Sorcerer> sorcerers)
         {
-            Sorcerers = sors.ToList();
-        }
-        public static void InitCurses(IEnumerable<Curse> curs)
-        {
-            Curses = curs.ToList();
-        }
-        public static void InitBattles(IEnumerable<Battle> bats)
-        {
-            Battles = bats.ToList();
+            Sorcerers = sorcerers.ToList();
         }
 
-        public static int HighestCursedEnergyAmountAmongSorcerers => Sorcerers.Max(e => e.CursedEnergyAmount);
-        public static int HighestCursedEnergyAmountAmongCurses => Curses.Max(e => e.CursedEnergyAmount);
-        public static Sorcerer[] Strongest3Sorcerer => Sorcerers.OrderByDescending(e => e.CursedEnergyAmount).Take(3).ToArray();
-        public static Curse[] Strongest3Curse => Curses.OrderByDescending(e => e.CursedEnergyAmount).Take(3).ToArray();
+        public static void InitCurses(IEnumerable<Curse> curses)
+        {
+            Curses = curses.ToList();
+        }
+
+        public static void InitBattles(IEnumerable<Battle> battles)
+        {
+            Battles = battles.ToList();
+        }
+
+        public static int HighestCursedEnergyAmountAmongSorcerers => GetHighestCursedEnergyAmount(Sorcerers);
+
+        public static int HighestCursedEnergyAmountAmongCurses => GetHighestCursedEnergyAmount(Curses);
+
+        public static Sorcerer[] Strongest3Sorcerers => GetStrongest3(Sorcerers);
+
+        public static Curse[] Strongest3Curses => GetStrongest3(Curses);
+
+        private static int GetHighestCursedEnergyAmount<T>(List<T> list) where T : IJujutsu
+        {
+            return list.Any() ? list.Max(e => e.CursedEnergyAmount) : 0;
+        }
+
+        private static T[] GetStrongest3<T>(List<T> list) where T : IJujutsu
+        {
+            return list.OrderByDescending(e => e.CursedEnergyAmount).Take(3).ToArray();
+        }
+
         public static int StrengthCheck(IJujutsu j1, IJujutsu j2)
         {
-            if (j1.CursedEnergyAmount == j2.CursedEnergyAmount)
-                return 0;
-            else if (j1.CursedEnergyAmount > j2.CursedEnergyAmount)
-                return 1;
-            else
-                return -1;
+            return j1.CursedEnergyAmount.CompareTo(j2.CursedEnergyAmount);
         }
+
+
         public static string[] SorcererNames => Sorcerers.Select(e => e.Name).ToArray();
+
         public static string[] CurseNames => Curses.Select(e => e.Name).ToArray();
+
         public static List<string> DomainNames()
         {
             List<string> names = new();
@@ -79,23 +91,30 @@ namespace jjkLib
             names.AddRange(Curses.Where(e => e.CanUseDomainExpansion).Select(e => e.DomainName));
             return names;
         }
+
         public static int DomainClash(IJujutsu j1, IJujutsu j2)
         {
             if (!j1.CanUseDomainExpansion && !j2.CanUseDomainExpansion)
                 return 0;
-            if (!j1.CanUseDomainExpansion && j2.CanUseDomainExpansion)
+            if (!j1.CanUseDomainExpansion)
                 return -1;
-            if(!j2.CanUseDomainExpansion && j1.CanUseDomainExpansion)
+            if (!j2.CanUseDomainExpansion)
                 return 1;
             return StrengthCheck(j1, j2);
         }
+
         public static string GetDomainUser(string domain)
         {
-            if(Sorcerers.Exists(e => e.DomainName == domain))
-                return Sorcerers.First(e => e.DomainName == domain).Name;
-            if(Curses.Exists(e => e.DomainName == domain))
-                return Curses.First(e => e.DomainName == domain).Name;
+            var sorcerer = Sorcerers.FirstOrDefault(e => e.DomainName == domain);
+            if (sorcerer != null)
+                return sorcerer.Name;
+
+            var curse = Curses.FirstOrDefault(e => e.DomainName == domain);
+            if (curse != null)
+                return curse.Name;
+
             return "none";
         }
+
     }
 }
